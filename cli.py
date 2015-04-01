@@ -1,11 +1,14 @@
 #!/usr/bin/python
 
+from __future__ import print_function
+from __future__ import unicode_literals
+
 from copy import deepcopy
 from zipfile import ZipFile
 import sys
 
 def usage():
-    print 'usage:', sys.argv[0], 'zip-in', 'zip-out', 'encoding'
+    print('usage: %s zip-in zip-out encoding' % sys.argv[0])
 
 def main():
     if len(sys.argv) < 4:
@@ -17,9 +20,9 @@ def main():
     for info in z1.infolist():
         fixed_info = deepcopy(info)
         try:
-            fixed_info.filename = info.filename.decode(enc)
-        except:
-            print 'Encoding', enc, 'does not seem to be right'
+            fixed_info.filename = info.filename.encode('cp437').decode(enc)
+        except Exception as ex:
+            print(ex)
             sys.exit(1)
         z2.writestr(fixed_info, z1.read(info.filename))
 
